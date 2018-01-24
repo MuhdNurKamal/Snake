@@ -59,7 +59,7 @@ function World(plan, canvas) {
 	// Set up food
 	this.setUpFood();
 
-	this.interval = setInterval(this.update.bind(this), 300);
+	this.interval = setInterval(this.update.bind(this), 100);
 }
 
 // Updates the world including the snake and draws the result on canvas
@@ -127,10 +127,11 @@ Snake.prototype.move = function() {
 		this.world.grid[nextY][nextX] = 1;
 	}
 
-	// Body
-	if(nextBlock == 1) {
+	// Body or wall
+	if(nextBlock == 1 || nextBlock == 3) {
 		alert("Game Over. Points = " + this.body.length);
-		this.world.interval.clearInteval(); // Stop gmae
+		clearInterval(this.world.interval);
+		return;
 	}
 
 	// Food
