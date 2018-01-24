@@ -59,7 +59,7 @@ function World(plan, canvas) {
 	// Set up food
 	this.setUpFood();
 
-	setInterval(this.update.bind(this), 300);
+	this.interval = setInterval(this.update.bind(this), 300);
 }
 
 // Updates the world including the snake and draws the result on canvas
@@ -114,19 +114,23 @@ Snake.prototype.move = function() {
 	}
 	var nextBlock = this.world.grid[nextY][nextX];
 
+	// Remove tail first if nexblock not Food
+	if(nextBlock != 2) {
+	var tailVector = this.body.pop();
+	this.world.grid[tailVector.y][tailVector.x] = 0;
+	}
+
 	// No obstruction
 	if(nextBlock == 0) {
 		// Add head
 		this.body.unshift(new Vector(nextX, nextY));
 		this.world.grid[nextY][nextX] = 1;
-		// Remove tail
-		var tailVector = this.body.pop();
-		this.world.grid[tailVector.y][tailVector.x] = 0;
 	}
 
 	// Body
 	if(nextBlock == 1) {
-
+		alert("Game Over. Points = " + this.body.length);
+		this.world.interval.clear(); // Stop gmae
 	}
 
 	// Food
