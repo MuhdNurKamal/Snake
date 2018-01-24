@@ -1,7 +1,7 @@
 directions = ["up", "down", "left", "right"];
 oppDirections = ["down", "up", "right", "left"];
 
-// Canvas context
+// html Canvas
 var canvas = document.querySelector("canvas");
 
 
@@ -23,7 +23,6 @@ function World(plan, canvas) {
 	this.width = 20;
 	this.height = 20;
 	this.grid = [];
-	var world = this;
 	// Instantiate empty grid
 	for(var y = 0; y < this.height; y++) {
 		var line = [];
@@ -32,16 +31,15 @@ function World(plan, canvas) {
 		}
 		this.grid.push(line);
 	}
-	
+
 	// Instantiate snake at center
 	this.snake = new Snake(this, this.width >> 1, this.height >> 1);
 	this.grid[this.height >> 1][this.width >> 1] = 1;
-	
+
 	this.display = new Display(this, canvas);
-	
+
 	// Define snake controls
 	addEventListener("keydown", function(event) {
-		console.log(event.keyCode);
 		switch(event.keyCode) {
 			case 40:
 				this.changeDirection("down");
@@ -57,11 +55,11 @@ function World(plan, canvas) {
 				break;
 		}
 	}.bind(this.snake))
-	
+
 	// Set up food
 	this.setUpFood();
-	
-	setInterval(world.update, 300);
+
+	setInterval(this.update.bind(this), 300);
 }
 
 // Updates the world including the snake and draws the result on canvas
@@ -115,23 +113,22 @@ Snake.prototype.move = function() {
 			break;
 	}
 	var nextBlock = this.world.grid[nextY][nextX];
-	
+
 	// No obstruction
 	if(nextBlock == 0) {
-		// Add head 
+		// Add head
 		this.body.unshift(new Vector(nextX, nextY));
 		this.world.grid[nextY][nextX] = 1;
 		// Remove tail
 		var tailVector = this.body.pop();
 		this.world.grid[tailVector.y][tailVector.x] = 0;
-		console.log(this.body.length);
 	}
-	
+
 	// Body
 	if(nextBlock == 1) {
-		
+
 	}
-	
+
 	// Food
 	if(nextBlock == 2) {
 		// Add head
@@ -148,9 +145,8 @@ Snake.prototype.changeDirection = function(newDirection) {
 		return;
 	//Can go opposite if length is 1
 	if(newDirection == oppDirections[directions.indexOf(this.direction)]) {
-		if(this.body.length == 1) 
+		if(this.body.length == 1)
 			this.direction = newDirection;
-		console.log(this.direction);
 		return;
 	}
 	// Length more than 1 or going not opposite direction
@@ -182,7 +178,7 @@ Display.prototype.draw = function() {
 			// Food
 			else if(block == 2)
 				this.cx.fillStyle = "red";
-			
+
 			// Paint block
 			this.cx.fillRect(canvasX, canvasY, this.blockWidth, this.blockHeight);
 		}
