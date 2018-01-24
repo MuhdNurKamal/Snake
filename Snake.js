@@ -130,7 +130,7 @@ Snake.prototype.move = function() {
 	// Body
 	if(nextBlock == 1) {
 		alert("Game Over. Points = " + this.body.length);
-		this.world.interval.clear(); // Stop gmae
+		this.world.interval.clearInteval(); // Stop gmae
 	}
 
 	// Food
