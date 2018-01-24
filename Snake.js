@@ -148,7 +148,7 @@ Snake.prototype.changeDirection = function(newDirection) {
 		return;
 	//Can go opposite if length is 1
 	if(newDirection == oppDirections[directions.indexOf(this.direction)]) {
-		if(this.body.length) 
+		if(this.body.length == 1) 
 			this.direction = newDirection;
 		console.log(this.direction);
 		return;
